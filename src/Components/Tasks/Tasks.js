@@ -4,6 +4,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Grid from '@material-ui/core/Grid';
+import GridHalf from '../Partials/GridHalf';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 import DataStore from '../DataStore';
 import './Tasks.css';
@@ -11,7 +13,8 @@ import _ from 'lodash';
 
 class Tasks extends Component {
 	state = {
-		tasks: []
+		tasks: [],
+		loaded: false
 	}
 	refineTask(task) {
 		return Object.assign(task.val(), {
@@ -74,37 +77,53 @@ class Tasks extends Component {
 				current[refinedTask.date]['data'].push(refinedTask);
 			}
 			this.setState({
-				tasks: current
+				tasks: current,
+				loaded: true
 			});
     });
 
 	}
 	render () {
 	  return (
-	    <List className="root" subheader={<li />}>
-	      {_.reverse(_.keys(this.state.tasks)).map(date => (
-	        <li key={`section-${date}`} className="listSection">
-	          <ul className="ul">
-	            <ListSubheader>{`${date}`} <span className="day-working-hours">{this.dayWorkingHours(this.state.tasks[date].data)}</span></ListSubheader>
-	            {_.reverse(_.sortBy(this.state.tasks[date].data, (task) => task.created && task.created)).map(task => (
-	              <ListItem key={`${task.id}`}>
-	              	<Grid container spacing={24} styles={"height: 80vh"} alignItems='center'>
-	              		<Grid item xs={4}>
-	                		<ListItemText primary={`${task.taskTitle}`} />
-	              		</Grid>
-	              		<Grid item xs={3}>
-	                		<span className="project" style={{backgroundColor: this.getColor(task.project)}}>{task.project}</span>
-	              		</Grid>
-	              		<Grid item xs={3}>
-	              			{this.taskDuration(task.created, task.ended)}
-	              		</Grid>
-	              	</Grid>
-	              </ListItem>
-	            ))}
-	          </ul>
-	        </li>
-	      ))}
-	    </List>
+	  	<div>
+	  		{
+	  			this.state.loaded ?
+				    <List className="root" subheader={<li />}>
+				      {_.reverse(_.keys(this.state.tasks)).map(date => (
+				        <li key={`section-${date}`} className="listSection">
+				          <ul className="ul">
+				            <ListSubheader>{`${date}`} <span className="day-working-hours">{this.dayWorkingHours(this.state.tasks[date].data)}</span></ListSubheader>
+				            {_.reverse(_.sortBy(this.state.tasks[date].data, (task) => task.created && task.created)).map(task => (
+				              <ListItem key={`${task.id}`}>
+				              	<Grid container spacing={24} styles={"height: 80vh"} alignItems='center'>
+				              		<Grid item xs={4}>
+				                		<ListItemText primary={`${task.taskTitle}`} />
+				              		</Grid>
+				              		<Grid item xs={3}>
+				                		<span className="project" style={{backgroundColor: this.getColor(task.project)}}>{task.project}</span>
+				              		</Grid>
+				              		<Grid item xs={3}>
+				              			{this.taskDuration(task.created, task.ended)}
+				              		</Grid>
+				              	</Grid>
+				              </ListItem>
+				            ))}
+				          </ul>
+				        </li>
+				      ))}
+				    </List>
+				    :
+			    <GridHalf container spacing={24} alignItems='center'>
+				    <Grid item xs={12}>
+				    	<Grid container justify='center'>
+					    	<div class="loading-wrapper">
+			  					<CircularProgress size={50} />
+			  				</div>
+		  				</Grid>
+						</Grid>
+	  			</GridHalf>
+	  		}
+	    </div>
 	  );
 	}
 }

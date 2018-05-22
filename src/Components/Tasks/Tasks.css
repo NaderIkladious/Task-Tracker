@@ -28,3 +28,7 @@
 	margin-left: 10px;
 	color: white;
 }
+.loading-wrapper {
+	margin: 0 auto;
+	display: block;
+}
