@@ -28,13 +28,27 @@ class Tasks extends Component {
 		});
 		return `rgb(${result[0]}, ${result[1]}, ${result[2]})`;
 	}
-	taskDuration(created, ended) {
+	dayWorkingHours(tasks) {
+		let total = 0;
+		tasks.forEach((task) => {
+      let thisMoment = this.timeDifference(task.created, task.ended).unix();
+      total += thisMoment;
+    });
+		return this.formatDuration(moment.utc(total*1000));
+	}
+	timeDifference(created, ended) {
 		let time = moment(created);
 		let now = moment(ended);
-		let diff = moment.utc(moment(now).diff(moment(time)));
+		return moment.utc(moment(now).diff(moment(time)));
+	}
+	formatDuration(diff) {
 		let hours = diff.get('hours') ? diff.get('hours') : 0;
 		let days = diff.get('date') === 1 ? 0 : ((diff.get('date') - 1) * 24); 
 		return hours + days + ':' +  diff.format("mm:ss");
+	}
+	taskDuration(created, ended) {
+		let diff = this.timeDifference(created, ended);
+		return this.formatDuration(diff);
 	}
 	componentWillMount() {
 		moment.locale('en', {
@@ -71,7 +85,7 @@ class Tasks extends Component {
 	      {_.reverse(_.keys(this.state.tasks)).map(date => (
 	        <li key={`section-${date}`} className="listSection">
 	          <ul className="ul">
-	            <ListSubheader>{`${date}`}</ListSubheader>
+	            <ListSubheader>{`${date}`} <span className="day-working-hours">{this.dayWorkingHours(this.state.tasks[date].data)}</span></ListSubheader>
 	            {_.reverse(_.sortBy(this.state.tasks[date].data, (task) => task.created && task.created)).map(task => (
 	              <ListItem key={`${task.id}`}>
 	              	<Grid container spacing={24} styles={"height: 80vh"} alignItems='center'>
