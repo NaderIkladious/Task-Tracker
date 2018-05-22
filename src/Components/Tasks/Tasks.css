@@ -1,0 +1,23 @@
+.root {
+  width: 100%;
+  background-color: #fff;
+  position: relative;
+  overflow: auto;
+  max-height: 80vh;
+}
+
+.listSection {
+  background-color: inherit;
+}
+
+.ul {
+  background-color: inherit;
+  padding: 0;
+}
+.project {
+	/*background: palevioletred;*/
+	padding: 2px 10px;
+	display: inline-block;
+	border-radius: 3px;
+	/*color: white;*/
+}
