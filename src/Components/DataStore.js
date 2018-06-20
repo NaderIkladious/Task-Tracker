@@ -7,8 +7,8 @@ class DataStore {
 	}
 
 	saveTask(data) {
-		// data = _.pick(data, ['project', 'taskTitle'])
-		data['created'] = new Date(data['created']).getTime();
+		data = _.pick(data, ['project', 'taskTitle'])
+		data['created'] = new Date().getTime();
 		this.CoformatiqueTimer.child('tasks').push().set(data);
 	}
 	endTask(id) {

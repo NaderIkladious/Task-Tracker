@@ -48,10 +48,14 @@ class TaskForm extends Component {
 				})
 			}
     });
-    this.interval = setInterval(() => {
-    	console.log(this.time());
-    	this.setState({counter: this.time()});
-    }, 1000);
+	}
+	componentDidUpdate() {
+		if (!this.interval && this.state.pendingTask) {
+	    this.interval = setInterval(() => {
+	    	this.setState({counter: this.time()});
+				console.log(this.state);
+	    }, 1000);	
+		}
 	}
 	constructor() {
 		super();
@@ -107,6 +111,10 @@ class TaskForm extends Component {
 				</GridHalf>
 			</form>
 		);
+	}
+	componentWillUnmount() {
+		clearInterval(this.interval);
+		this.interval = undefined;
 	}
 }
 
