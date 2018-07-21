@@ -25,52 +25,52 @@ const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   appFrame: {
     zIndex: 1,
     overflow: 'hidden',
     position: 'relative',
     display: 'flex',
-    width: '100%',
+    width: '100%'
   },
   appBar: {
     position: 'absolute',
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+      duration: theme.transitions.duration.leavingScreen
+    })
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   'appBarShift-left': {
-    marginLeft: drawerWidth,
+    marginLeft: drawerWidth
   },
   'appBarShift-right': {
-    marginRight: drawerWidth,
+    marginRight: drawerWidth
   },
   menuButton: {
     marginLeft: 12,
-    marginRight: 20,
+    marginRight: 20
   },
   hide: {
-    display: 'none',
+    display: 'none'
   },
   drawerPaper: {
     position: 'relative',
-    width: drawerWidth,
+    width: drawerWidth
   },
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
-    ...theme.mixins.toolbar,
+    ...theme.mixins.toolbar
   },
   content: {
     flexGrow: 1,
@@ -78,32 +78,32 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+      duration: theme.transitions.duration.leavingScreen
+    })
   },
   'content-left': {
-    marginLeft: -drawerWidth,
+    marginLeft: -drawerWidth
   },
   'content-right': {
-    marginRight: -drawerWidth,
+    marginRight: -drawerWidth
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   'contentShift-left': {
-    marginLeft: 0,
+    marginLeft: 0
   },
   'contentShift-right': {
-    marginRight: 0,
-  },
+    marginRight: 0
+  }
 });
 
 class App extends React.Component {
   state = {
-    open: false,
+    open: false
   };
 
   handleDrawerOpen = () => {
@@ -124,7 +124,7 @@ class App extends React.Component {
         anchor="left"
         open={open}
         classes={{
-          paper: classes.drawerPaper,
+          paper: classes.drawerPaper
         }}
       >
         <div className={classes.drawerHeader}>
@@ -133,17 +133,16 @@ class App extends React.Component {
           </IconButton>
         </div>
         <Divider />
-        <MenuItem>
-          <NavLink  activeClassName="active" exact to="/">Home</NavLink >
-        </MenuItem>
-        <MenuItem>
-          <NavLink  activeClassName="active" to="/tasks">Tasks</NavLink >
-        </MenuItem>
-        <MenuItem>
-          <NavLink  activeClassName="active" to="/projects">Projects</NavLink >
-        </MenuItem>
+        <NavLink activeClassName="active" exact to="/">
+          <MenuItem>Home</MenuItem>
+        </NavLink>
+        <NavLink activeClassName="active" to="/tasks">
+          <MenuItem>Tasks</MenuItem>
+        </NavLink>
+        <NavLink activeClassName="active" to="/projects">
+          <MenuItem>Projects</MenuItem>
+        </NavLink>
         <Divider />
-
       </Drawer>
     );
 
@@ -158,7 +157,7 @@ class App extends React.Component {
                 color="secondary"
                 className={classNames(classes.appBar, {
                   [classes.appBarShift]: open,
-                  [classes[`appBarShift-left`]]: open,
+                  [classes[`appBarShift-left`]]: open
                 })}
               >
                 <Toolbar disableGutters={!open}>
@@ -179,7 +178,7 @@ class App extends React.Component {
               <main
                 className={classNames(classes.content, classes[`content-left`], {
                   [classes.contentShift]: open,
-                  [classes[`contentShift-left`]]: open,
+                  [classes[`contentShift-left`]]: open
                 })}
               >
                 <div className={classes.drawerHeader} />
@@ -198,7 +197,7 @@ class App extends React.Component {
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(App);
