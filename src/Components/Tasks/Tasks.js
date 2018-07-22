@@ -15,7 +15,7 @@ class Tasks extends Component {
 	state = {
 		tasks: [],
 		loaded: false
-	}
+	};
 	refineTask(task) {
 		return Object.assign(task.val(), {
 			id: task.key,
@@ -24,7 +24,7 @@ class Tasks extends Component {
 		});
 	}
 	getColor(title) {
-		let abc = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+		let abc = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		let result = [];
 		_.each(_.take(title, 3), char => {
 			result.push(_.indexOf(abc, _.toUpper(char)) * 10);
@@ -33,11 +33,11 @@ class Tasks extends Component {
 	}
 	dayWorkingHours(tasks) {
 		let total = 0;
-		tasks.forEach((task) => {
-      let thisMoment = this.timeDifference(task.created, task.ended).unix();
-      total += thisMoment;
-    });
-		return this.formatDuration(moment.utc(total*1000));
+		tasks.forEach(task => {
+			let thisMoment = this.timeDifference(task.created, task.ended).unix();
+			total += thisMoment;
+		});
+		return this.formatDuration(moment.utc(total * 1000));
 	}
 	timeDifference(created, ended) {
 		let time = moment(created);
@@ -46,8 +46,8 @@ class Tasks extends Component {
 	}
 	formatDuration(diff) {
 		let hours = diff.get('hours') ? diff.get('hours') : 0;
-		let days = diff.get('date') === 1 ? 0 : ((diff.get('date') - 1) * 24); 
-		return hours + days + ':' +  diff.format("mm:ss");
+		let days = diff.get('date') === 1 ? 0 : (diff.get('date') - 1) * 24;
+		return hours + days + ':' + diff.format('mm:ss');
 	}
 	taskDuration(created, ended) {
 		let diff = this.timeDifference(created, ended);
@@ -55,76 +55,79 @@ class Tasks extends Component {
 	}
 	componentWillMount() {
 		moment.locale('en', {
-		    calendar : {
-		        lastDay : '[Yesterday]',
-		        sameDay : '[Today]',
-		        nextDay : '[Tomorrow]',
-		        lastWeek : '[last] dddd',
-		        nextWeek : 'dddd',
-		        sameElse : 'L'
-		    }
+			calendar: {
+				lastDay: '[Yesterday]',
+				sameDay: '[Today]',
+				nextDay: '[Tomorrow]',
+				lastWeek: '[last] dddd',
+				nextWeek: 'dddd',
+				sameElse: 'L'
+			}
 		});
-		this.DS = new DataStore;
+		this.DS = new DataStore();
 		this.allTasks = this.DS.getTasks();
-	
+
 		this.allTasks.on('child_added', task => {
 			let current = this.state.tasks;
 			let refinedTask = this.refineTask(task);
 			if (current[refinedTask.date] && current[refinedTask.date]['data']) {
 				current[refinedTask.date]['data'].push(refinedTask);
 			} else {
-				current[refinedTask.date] = {data: [], order: refinedTask.time};
+				current[refinedTask.date] = { data: [], order: refinedTask.time };
 				current[refinedTask.date]['data'].push(refinedTask);
 			}
 			this.setState({
 				tasks: current,
 				loaded: true
 			});
-    });
-
+		});
 	}
-	render () {
-	  return (
-	  	<div>
-	  		{
-	  			this.state.loaded ?
-				    <List className="root" subheader={<li />}>
-				      {_.reverse(_.keys(this.state.tasks)).map(date => (
-				        <li key={`section-${date}`} className="listSection">
-				          <ul className="ul">
-				            <ListSubheader>{`${date}`} <span className="day-working-hours">{this.dayWorkingHours(this.state.tasks[date].data)}</span></ListSubheader>
-				            {_.reverse(_.sortBy(this.state.tasks[date].data, (task) => task.created && task.created)).map(task => (
-				              <ListItem key={`${task.id}`}>
-				              	<Grid container spacing={24} styles={"height: 80vh"} alignItems='center'>
-				              		<Grid item xs={4}>
-				                		<ListItemText primary={`${task.taskTitle}`} />
-				              		</Grid>
-				              		<Grid item xs={3}>
-				                		<span className="project" style={{backgroundColor: this.getColor(task.project)}}>{task.project}</span>
-				              		</Grid>
-				              		<Grid item xs={3}>
-				              			{this.taskDuration(task.created, task.ended)}
-				              		</Grid>
-				              	</Grid>
-				              </ListItem>
-				            ))}
-				          </ul>
-				        </li>
-				      ))}
-				    </List>
-				    :
-			    <GridHalf container spacing={24} alignItems='center'>
-				    <Grid item xs={12}>
-				    	<Grid container justify='center'>
-					    	<div class="loading-wrapper">
-			  					<CircularProgress size={50} />
-			  				</div>
-		  				</Grid>
+	render() {
+		return (
+			<div>
+				{this.state.loaded ? (
+					<List className="root" subheader={<li />}>
+						{_.reverse(_.keys(this.state.tasks)).map(date => (
+							<li key={`section-${date}`} className="listSection">
+								<ul className="ul">
+									<ListSubheader>
+										{`${date}`}{' '}
+										<span className="day-working-hours">{this.dayWorkingHours(this.state.tasks[date].data)}</span>
+									</ListSubheader>
+									{_.reverse(_.sortBy(this.state.tasks[date].data, task => task.created && task.created)).map(task => (
+										<ListItem key={`${task.id}`}>
+											<Grid container spacing={24} styles={'height: 80vh'} alignItems="center">
+												<Grid item xs={4}>
+													<ListItemText primary={`${task.taskTitle}`} />
+												</Grid>
+												<Grid item xs={3}>
+													<span className="project" style={{ backgroundColor: this.getColor(task.project) }}>
+														{task.project}
+													</span>
+												</Grid>
+												<Grid item xs={3}>
+													{this.taskDuration(task.created, task.ended)}
+												</Grid>
+											</Grid>
+										</ListItem>
+									))}
+								</ul>
+							</li>
+						))}
+					</List>
+				) : (
+					<GridHalf container spacing={24} alignItems="center">
+						<Grid item xs={12}>
+							<Grid container justify="center">
+								<div class="loading-wrapper">
+									<CircularProgress size={50} />
+								</div>
+							</Grid>
 						</Grid>
-	  			</GridHalf>
-	  		}
-	    </div>
-	  );
+					</GridHalf>
+				)}
+			</div>
+		);
 	}
 }
 
