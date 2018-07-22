@@ -119,7 +119,7 @@ class Tasks extends Component {
 					<GridHalf container spacing={24} alignItems="center">
 						<Grid item xs={12}>
 							<Grid container justify="center">
-								<div class="loading-wrapper">
+								<div className="loading-wrapper">
 									<CircularProgress size={50} />
 								</div>
 							</Grid>

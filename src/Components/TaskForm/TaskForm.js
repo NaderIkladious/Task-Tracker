@@ -46,31 +46,24 @@ class TaskForm extends Component {
 		if (!this.interval && this.state.pendingTask) {
 			this.interval = setInterval(() => {
 				this.setState({ counter: this.time() });
-				console.log(this.state);
 			}, 1000);
 		}
 	}
-	constructor() {
-		super();
-		this.startTask = this.startTask.bind(this);
-		this.endTask = this.endTask.bind(this);
-		this.changeInput = this.changeInput.bind(this);
-	}
-	changeInput(e) {
+	changeInput = e => {
 		this.setState({
 			[e.target.name]: e.target.value
 		});
-	}
-	startTask(e) {
+	};
+	startTask = e => {
 		if (this.state.project.length && this.state.taskTitle.length) {
 			this.DS.saveTask(this.state);
 		}
-	}
-	endTask(e) {
+	};
+	endTask = e => {
 		if (this.state.taskId) {
 			this.DS.endTask(this.state.taskId);
 		}
-	}
+	};
 	time() {
 		let time = moment(this.state.startTime);
 		let now = moment(new Date());
@@ -81,7 +74,6 @@ class TaskForm extends Component {
 	}
 	render() {
 		const isPendingTask = this.state.pendingTask;
-
 		const button = isPendingTask ? (
 			<ButtonField color="secondary" onClick={this.endTask}>
 				{this.state.counter} <br />Finish
