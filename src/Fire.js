@@ -1,13 +1,13 @@
 import firebase from 'firebase/app';
 import 'firebase/database';
 
-var config = {
-  apiKey: 'AIzaSyD5jGI3uCWIE_VrUucAXD7YowxHTQsHT70',
-  authDomain: 'coformatique-timer.firebaseapp.com/',
-  databaseURL: 'https://coformatique-timer.firebaseio.com/',
-  projectId: 'coformatique-timer',
-  storageBucket: 'coformatique-timer.appspot.com',
-  messagingSenderId: '780592844332'
+const config = {
+  apiKey: process.env.REACT_APP_APIKEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASEURL,
+  projectId: process.env.REACT_APP_PROJECTID,
+  storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGINGSENDID
 };
 const Fire = firebase.initializeApp(config);
 export default Fire;
